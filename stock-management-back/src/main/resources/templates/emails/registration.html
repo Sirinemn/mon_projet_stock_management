@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Inscription réussie</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .email-container {
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #333333;
+        }
+        ul {
+            padding-left: 20px;
+            color: #333333;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        strong {
+            color: #000000;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #666666;
+            border-top: 1px solid #eeeeee;
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <p>Bonjour <strong><span th:text="${firstname}"></span> <span th:text="${lastname}"></span></strong>,</p>
+
+    <p>Votre compte a été créé avec succès. Voici vos identifiants :</p>
+
+    <ul>
+        <li><strong>Email :</strong> <span th:text="${email}"></span></li>
+        <li><strong>Mot de passe (début) :</strong> <span th:text="${password}"></span>…</li>
+    </ul>
+
+    <p><strong>Important :</strong> Pour des raisons de sécurité, merci de vous connecter dès que possible et de modifier votre mot de passe.</p>
+    <p>Pour vous connecter, cliquez sur le bouton ci-dessous :</p>
+    <a th:href="${loginurl}" class="cta">Se connecter</a>
+
+    <div class="footer">
+        <p>Cordialement,</p>
+        <p><strong>L'équipe de Stock-Zen</strong></p>
+    </div>
+    <p style="font-size: 14px; color: #666666;">Cet email est automatique, merci de ne pas y répondre.</p>
+</div>
+</body>
+</html>

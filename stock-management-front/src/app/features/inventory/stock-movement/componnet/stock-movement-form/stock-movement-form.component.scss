@@ -1,0 +1,133 @@
+.title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  
+  .arrow_back {
+    margin-right: 8px;
+    
+    button {
+      transition: transform 0.2s ease;
+      
+      &:hover {
+        transform: translateX(-2px);
+      }
+    }
+  }
+}
+
+mat-card {
+  width: 100%;
+  max-width: 500px;
+  margin: 24px auto;
+  padding: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+}
+
+mat-card-title {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+mat-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+mat-form-field {
+  margin: 8px 0;
+  
+  &.mat-form-field-appearance-outline .mat-form-field-outline {
+    color: rgba(0, 0, 0, 0.12);
+  }
+}
+
+mat-radio-group {
+  display: flex;
+  gap: 16px;
+  margin: 8px 0 16px;
+  
+  mat-radio-button {
+    padding: 8px 0;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  justify-content: flex-end;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+  min-height: 40px;
+}
+
+@media (max-width: 600px) {
+  mat-card {
+    margin: 16px;
+    padding: 16px;
+    box-shadow: none;
+    border: 1px solid #eee;
+  }
+  
+  mat-card-title {
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+  }
+  
+  mat-radio-group {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .actions {
+    flex-direction: column-reverse;
+    gap: 8px;
+    margin-top: 16px;
+    
+    button {
+      width: 100%;
+      padding: 8px 0;
+    }
+  }
+}
+
+input.mat-input-element,
+mat-select {
+  transition: all 0.2s ease;
+  
+  &:focus {
+    outline: none;
+  }
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #3f51b5;
+}
+
+.ng-invalid.ng-touched {
+  animation: shake 0.3s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-3px); }
+  40%, 80% { transform: translateX(3px); }
+}

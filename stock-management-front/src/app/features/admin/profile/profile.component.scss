@@ -1,0 +1,177 @@
+/* Structure principale */
+.profile-container {
+  width: 100%;
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+mat-card {
+  width: 100%;
+  max-width: 600px;
+  margin: 2rem auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+mat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* En-tête */
+.profile-header {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem 1.5rem 0;
+  position: relative;
+}
+
+.title {
+  flex: 1;
+  text-align: center;
+}
+
+.title h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+
+mat-card-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: rgba(63, 81, 181, 0.2);
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #3f51b5;
+}
+
+.mat-input-element {
+  font-size: 1rem;
+}
+
+.delete-section {
+  margin-top: 2.5rem;
+  padding: 1.5rem;
+  border-top: 1px solid #f5f5f5;
+  background-color: #fafafa;
+  border-radius: 8px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.delte-account-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  color: white;
+  background-color: #f44336;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.delte-account-btn:hover {
+  background-color: #d32f2f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
+}
+
+.warning-text {
+  color: #d32f2f;
+  font-size: 0.75rem;
+  margin-top: 12px;
+  font-weight: 500;
+  animation: pulse 2s infinite;
+}
+
+.mat-datepicker-toggle {
+  color: #3f51b5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .profile-header {
+    padding: 1rem 1rem 0;
+  }
+  
+  .title h1 {
+    font-size: 1.5rem;
+  }
+  
+  mat-card {
+    margin: 1rem auto;
+    border-radius: 8px;
+  }
+  
+  mat-card-content {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .delete-section {
+    padding: 1rem;
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title h1 {
+    font-size: 1.3rem;
+  }
+  
+  .custom-button {
+    width: 100%;
+    padding: 0.8rem;
+  }
+  
+  .arrow_back {
+    left: 0.5rem;
+  }
+  
+  .profile-header {
+    padding-left: 2.5rem;
+  }
+}
+
+/* Animations */
+@keyframes pulse {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+mat-card-content > * {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Délais d'animation pour chaque élément */
+mat-form-field:nth-child(1) { animation-delay: 0.1s; }
+mat-form-field:nth-child(2) { animation-delay: 0.2s; }
+mat-form-field:nth-child(3) { animation-delay: 0.3s; }
+mat-form-field:nth-child(4) { animation-delay: 0.4s; }
+mat-form-field:nth-child(5) { animation-delay: 0.5s; }
+.custom-button { animation-delay: 0.6s; }
+.delete-section { animation-delay: 0.7s; }

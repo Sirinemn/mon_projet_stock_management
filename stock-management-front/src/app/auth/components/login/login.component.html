@@ -1,0 +1,48 @@
+<mat-card>
+  <div>
+      <button mat-icon-button class="arrow_back" (click)="back()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  <mat-card-title>Connexion</mat-card-title>
+
+  <mat-card-content>
+
+    <form [formGroup]="formGroup" (ngSubmit)="Submit()">
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" placeholder="Entrez votre email">
+        <mat-error *ngIf="formGroup.get('email')?.hasError('required')">Email requis</mat-error>
+        <mat-error *ngIf="formGroup.get('email')?.hasError('email')">Format email invalide</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Mot de passe</mat-label>
+        <input matInput formControlName="password" type="password" placeholder="Entrez votre mot de passe">
+        <mat-error *ngIf="formGroup.get('password')?.hasError('required')">Mot de passe requis</mat-error>
+      </mat-form-field>
+
+      <p *ngIf="errorMessage" class="error-message">{{errorMessage}}</p>
+
+      <div *ngIf="isLoading" class="loading-spinner">
+        <mat-spinner></mat-spinner>
+      </div>
+
+      <div class="button-container">
+        <button class="custom-button" mat-raised-button color="primary" type="submit" 
+        [disabled]="formGroup.invalid || isLoading"
+        [ngClass]="{ 'disabled-button': formGroup.invalid || isLoading }">Se connecter</button>
+        <button class="custom-button" mat-raised-button color="accent" type="button" (click)="goToRegister()">S'inscrire</button>
+      </div>
+
+    </form>
+
+  </mat-card-content>
+
+  <mat-card-actions class="register-link">
+    <p>Pas de compte ? <a routerLink="/auth/register">S'inscrire</a></p>
+    <p>Mot de passe oublié ? <a routerLink="/forgot-password">réinitialiser le mot de passe </a></p>
+  </mat-card-actions>
+
+</mat-card>

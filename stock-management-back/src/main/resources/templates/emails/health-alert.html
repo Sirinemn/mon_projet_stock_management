@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>StockZen - Alerte de santé</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 20px; }
+        .card { background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h2 { color: #dc3545; }
+        .details { margin-top: 20px; font-size: 14px; }
+        p { color: #333; line-height: 1.6; }
+        strong { color: #000; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h2>⚠️ Alerte Santé : Un composant est <strong>DOWN</strong></h2>
+    <p><strong>Status :</strong> ${status}</p>
+    <div class="details">
+        <strong>Détails :</strong><br/>
+        <pre>${details}</pre>
+    </div>
+    <p>Ce message a été généré automatiquement par <strong>StockZen</strong>.</p>
+    <p>Pour plus d'informations, veuillez consulter votre tableau de bord.</p>
+    <p>Merci de votre attention.</p>
+    <p>Cordialement,<br/>L'équipe StockZen</p>
+</div>
+</body>
+</html>

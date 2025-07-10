@@ -1,0 +1,63 @@
+<div class="detail-container">
+  <div class="detail-header">
+    <button class="arrow_back" (click)="back()" aria-label="Retour">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="detail-title">Détails du mouvement</h1>
+  </div>
+
+  <div class="detail-card" [class.entry]="stockMovement?.type === 'ENTREE'" [class.exit]="stockMovement?.type === 'SORTIE'">
+    <div class="card-header">
+      <div class="product-info">
+        <mat-icon class="type-icon">{{stockMovement?.type === 'ENTREE' ? 'arrow_upward' : 'arrow_downward'}}</mat-icon>
+        <h2>{{stockMovement?.productName}}</h2>
+      </div>
+      <div class="quantity-badge">
+        {{stockMovement?.quantity}} {{stockMovement?.type === 'ENTREE' ? '+' : '-'}}
+      </div>
+    </div>
+
+    <div class="detail-grid">
+      <div class="detail-item">
+        <mat-icon>person</mat-icon>
+        <div>
+          <span class="label">Ajouté par</span>
+          <span class="value">{{stockMovement?.userName}}</span>
+        </div>
+      </div>
+
+      <div class="detail-item">
+        <mat-icon>category</mat-icon>
+        <div>
+          <span class="label">Produit</span>
+          <span class="value">{{stockMovement?.productName}}</span>
+        </div>
+      </div>
+
+      <div class="detail-item">
+        <mat-icon>event</mat-icon>
+        <div>
+          <span class="label">Créé le</span>
+          <span class="value">{{stockMovement?.createdDate | date:'medium'}}</span>
+        </div>
+      </div>
+
+      <div class="detail-item" *ngIf="stockMovement?.lastModifiedDate">
+        <mat-icon>update</mat-icon>
+        <div>
+          <span class="label">Modifié le</span>
+          <span class="value">{{stockMovement?.lastModifiedDate | date:'medium'}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    <mat-icon>error</mat-icon>
+    <p>{{errorMessage}}</p>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-overlay">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+</div>

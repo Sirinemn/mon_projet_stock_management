@@ -1,0 +1,7 @@
+<mat-toolbar color="primary" class="toolbar" *ngIf="($isLogged() | async) === false">
+    <img src="/logo.png" alt="Logo" class="toolbar-image" routerLink="/"/>
+    Stock - Zen
+  </mat-toolbar>
+<app-header *ngIf="$isLogged() | async"></app-header>
+<router-outlet></router-outlet>
+<app-footer></app-footer>

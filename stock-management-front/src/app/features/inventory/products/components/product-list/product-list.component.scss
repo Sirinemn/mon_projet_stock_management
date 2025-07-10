@@ -1,0 +1,163 @@
+.main-container {
+  padding: 30px 16px 16px;
+  min-height: calc(100vh - 64px);
+  box-sizing: border-box;
+}
+
+.product-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 8px;
+}
+
+.content-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.product-list-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+
+  .title {
+    flex: 1;
+    min-width: 200px;
+    h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+  }
+
+  .arrow_back {
+    margin-right: 8px;
+  }
+
+  .filters {
+    margin-right: 16px;
+    .category-select {
+      width: 200px;
+    }
+  }
+
+  .add-product-btn {
+    margin-left: 8px;
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+
+  &.mat-elevation-z2 {
+    border-radius: 4px;
+    overflow: hidden;
+  }
+}
+
+th, td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 24px;
+  background: white;
+  border-radius: 8px;
+  max-width: 500px;
+  margin: 40px auto;
+
+  .empty-icon {
+    font-size: 60px;
+    width: 60px;
+    height: 60px;
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    margin: 0 0 8px 0;
+    font-size: 1.2rem;
+    color: #333;
+  }
+
+  p {
+    margin: 0 0 24px 0;
+    color: #757575;
+    font-size: 0.9rem;
+  }
+
+  .empty-action {
+    padding: 8px 24px;
+  }
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+/* Responsive tablette */
+@media (max-width: 768px) {
+  .product-list-header {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .title {
+      margin-bottom: 16px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .arrow_back {
+      position: absolute;
+      top: 20px;
+      left: 8px;
+    }
+
+    .filters {
+      width: 100%;
+      margin-bottom: 16px;
+
+      .category-select {
+        width: 100%;
+      }
+    }
+
+    .add-product-btn {
+      align-self: center;
+      margin: 8px 0;
+      width: 100%;
+
+      .custom-button {
+        width: 100%;
+      }
+    }
+  }
+}
+
+/* Responsive mobile */
+@media (max-width: 600px) {
+  .add-product-btn .icon-only {
+    display: inline-flex;
+  }
+  .arrow_back {
+    margin-top: 38px;
+  }
+
+}

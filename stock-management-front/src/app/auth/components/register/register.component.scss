@@ -1,0 +1,62 @@
+
+mat-card {
+  width: 100%;
+  max-width: 500px; 
+  margin: 20px auto;
+}
+
+mat-card-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+mat-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; 
+}
+.full-width {
+  width: 100%;
+}
+
+mat-form-field {
+  width: 100%;
+  margin: 10px 0;
+}
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: flex-end; 
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.login-link {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.login-link a {
+  color: #1976d2; 
+  text-decoration: none;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+/* Responsivité (petits écrans) */
+@media (max-width: 600px) {
+  mat-card {
+    margin: 10px;
+  }
+
+  .actions {
+    flex-direction: column; /* Empile les boutons sur les petits écrans */
+    align-items: stretch; /* Étire les boutons sur toute la largeur */
+  }
+}

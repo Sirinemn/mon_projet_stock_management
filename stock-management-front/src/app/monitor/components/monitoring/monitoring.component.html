@@ -1,0 +1,31 @@
+<mat-card *ngIf="healthData">
+  <mat-card-title>📊 État de santé de l'application</mat-card-title>
+  <mat-card-content>
+    <p *ngIf="healthData.status"><strong>Status global:</strong> {{ healthData.status }}</p>
+
+    <mat-accordion *ngIf="healthData.components">
+      <mat-expansion-panel *ngFor="let comp of healthData.components | keyvalue">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ comp.key }} :
+            <span [ngClass]="{
+              'text-success': comp.value.status === 'UP',
+              'text-danger': comp.value.status !== 'UP'
+            }">
+              {{ comp.value.status }}
+            </span>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div *ngIf="comp.value?.details">
+          <table class="table table-sm">
+            <tr *ngFor="let detail of comp.value.details | keyvalue">
+              <td><strong>{{ detail.key }}</strong></td>
+              <td>{{ detail.value }}</td>
+            </tr>
+          </table>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-card-content>
+</mat-card>

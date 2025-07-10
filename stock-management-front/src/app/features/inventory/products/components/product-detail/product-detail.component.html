@@ -1,0 +1,71 @@
+<div class="product-detail-container">
+  <div class="product-header">
+    <button mat-icon-button class="arrow_back" (click)="back()" aria-label="Retour">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="product-title">Détails du produit</h1>
+  </div>
+
+  <div class="product-card">
+    <div class="card-header">
+      <div class="product-main-info">
+        <h2>{{product?.name}}</h2>
+        <div class="product-category">
+          <mat-icon>category</mat-icon>
+          <span>{{product?.categoryName}}</span>
+        </div>
+      </div>
+      
+      <div class="quantity-indicator" [class.low-stock]="isProductLow">
+        <mat-icon>inventory_2</mat-icon>
+        <span>{{product?.quantity}} en stock</span>
+        <div *ngIf="isProductLow" class="stock-alert">
+          <mat-icon>warning</mat-icon>
+          Stock faible
+        </div>
+      </div>
+    </div>
+
+    <div class="product-content">
+      <div class="description-section">
+        <h3>Description</h3>
+        <p>{{product?.description || 'Aucune description disponible'}}</p>
+      </div>
+
+      <div class="details-grid">
+        <div class="detail-item">
+          <mat-icon>attach_money</mat-icon>
+          <div>
+            <span class="label">Prix unitaire</span>
+            <span class="value">{{product?.price | currency:'EUR':'symbol':'1.2-2'}}</span>
+          </div>
+        </div>
+
+        <div class="detail-item">
+          <mat-icon>notification_important</mat-icon>
+          <div>
+            <span class="label">Seuil d'alerte</span>
+            <span class="value">{{product?.threshold}}</span>
+          </div>
+        </div>
+
+        <div class="detail-item">
+          <mat-icon>person</mat-icon>
+          <div>
+            <span class="label">Créé par</span>
+            <span class="value">{{product?.userName}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    <mat-icon>error</mat-icon>
+    <p>{{errorMessage}}</p>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-overlay">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+</div>

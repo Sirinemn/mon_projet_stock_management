@@ -1,0 +1,68 @@
+<div class="user-detail-container">
+  <div class="user-header">
+    <button mat-icon-button class="arrow_back" (click)="back()" aria-label="Retour">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="user-title">Profil Utilisateur</h1>
+  </div>
+
+  <div class="user-card" *ngIf="!errorMessage; else noUser">
+    <div class="card-header">
+      <div class="user-main-info">
+        <h2>{{user.firstname}} {{user.lastname}}</h2>
+        <div class="user-email">
+          <mat-icon>email</mat-icon>
+          <span>{{user.email}}</span>
+        </div>
+      </div>
+      
+      <div class="user-status">
+        <mat-icon>account_circle</mat-icon>
+        <span>Actif</span>
+      </div>
+    </div>
+
+    <div class="user-content">
+      <div class="details-grid">
+        <div class="detail-item">
+          <mat-icon>calendar_today</mat-icon>
+          <div>
+            <span class="label">Date de naissance</span>
+            <span class="value">{{user.dateOfBirth | date:'mediumDate'}}</span>
+          </div>
+        </div>
+
+        <div class="detail-item">
+          <mat-icon>event</mat-icon>
+          <div>
+            <span class="label">Membre depuis</span>
+            <span class="value">{{user.createdDate | date:'mediumDate'}}</span>
+          </div>
+        </div>
+
+        <div class="detail-item" *ngIf="user.lastModifiedDate">
+          <mat-icon>update</mat-icon>
+          <div>
+            <span class="label">Dernière modification</span>
+            <span class="value">{{user.lastModifiedDate | date:'mediumDate'}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noUser>
+    <div class="empty-state mat-elevation-z1">
+      <mat-icon class="empty-icon">person_off</mat-icon>
+      <h3>Utilisateur non trouvé</h3>
+      <p>{{errorMessage}}</p>
+      <button mat-raised-button color="primary" routerLink="/users" class="empty-action">
+        Retour à la liste
+      </button>
+    </div>
+  </ng-template>
+
+  <div *ngIf="isloading" class="loading-overlay">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+</div>

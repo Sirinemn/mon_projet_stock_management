@@ -1,0 +1,68 @@
+<mat-card class="filter-card">
+  <mat-card-title>Filtrer les mouvements de stock</mat-card-title>
+  
+    <mat-card-content>
+        <p>Utilisez les filtres ci-dessous pour affiner votre recherche.</p>
+
+        <form [formGroup]="filterForm" (ngSubmit)="onSubmit()" class="filter-form">
+            <div class="form-group">
+              <mat-form-field appearance="fill">
+                  <mat-label>Utilisateur</mat-label>
+                  <mat-select formControlName="userId">
+                  <mat-option value="">Tous</mat-option>
+                  <mat-option *ngFor="let user of users" [value]="user.id">
+                      {{ user.firstname }} {{ user.lastname }}
+                  </mat-option>
+                  </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                  <mat-label>Produit</mat-label>
+                  <mat-select formControlName="productId">
+                  <mat-option value="">Tous</mat-option>
+                  <mat-option *ngFor="let product of products" [value]="product.id">
+                      {{ product.name }}
+                  </mat-option>
+                  </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                  <mat-label>Date début</mat-label>
+                  <input matInput [matDatepicker]="pickerStart" formControlName="startDate">
+                  <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerStart></mat-datepicker>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                  <mat-label>Date fin</mat-label>
+                  <input matInput [matDatepicker]="pickerEnd" formControlName="endDate">
+                  <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerEnd></mat-datepicker>
+              </mat-form-field>
+              <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+            </div>
+
+            <div class="form-actions">
+              <button mat-raised-button class="custom-button" type="submit">Filtrer</button>
+              <button mat-stroked-button class="custom-button" type="button" (click)="onReset()">Réinitialiser</button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>
+
+<mat-card class="results-card">
+  <mat-card-title>Résultats du filtre</mat-card-title>
+  <mat-card-content>
+    <p *ngIf="isLoading">Chargement des mouvements...</p>
+    <mat-spinner *ngIf="isLoading" diameter="30"></mat-spinner>
+    <p *ngIf="filteredMovements.length === 0">Aucun mouvement trouvé.</p>
+    <mat-list *ngIf="filteredMovements.length > 0">
+      <mat-list-item *ngFor="let movement of filteredMovements">
+        {{ movement.productName }} – {{ movement.userName }} – {{ movement.createdDate | date }} - {{ movement.type }}
+        <span class="movement-quantity" [ngClass]="{'in': movement.type === 'ENTREE', 'out': movement.type === 'SORTIE'}">
+          {{ movement.quantity }}
+        </span>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

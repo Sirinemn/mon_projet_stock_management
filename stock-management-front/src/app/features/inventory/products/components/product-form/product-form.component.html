@@ -1,0 +1,71 @@
+<mat-card>
+    <mat-card-title>{{ isEditMode ? 'Modifier' : 'Ajouter' }} un produit</mat-card-title>
+      <mat-card-content>
+        <form [formGroup]="formGroup" (ngSubmit)="isEditMode ? updateProduct() : addProduct()">
+          <!-- Nom du produit -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nom du produit</mat-label>
+            <input matInput formControlName="name" type="text" placeholder="Entrez le nom du produit">
+            <mat-error *ngIf="formGroup.get('name')?.hasError('required')">Nom requis</mat-error>
+            <mat-error *ngIf="formGroup.get('name')?.hasError('minlength')">Nom trop court</mat-error>
+            <mat-error *ngIf="formGroup.get('name')?.hasError('maxlength')">Nom trop long</mat-error>
+          </mat-form-field>
+
+          <!-- Description -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description" placeholder="Entrez la description"></textarea>
+            <mat-error *ngIf="formGroup.get('description')?.hasError('required')">Description requise</mat-error>
+          </mat-form-field>
+
+          <!-- Prix -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Prix</mat-label>
+            <input matInput formControlName="price" type="number" placeholder="Entrez le prix">
+            <mat-error *ngIf="formGroup.get('price')?.hasError('required')">Prix requis</mat-error>
+            <mat-error *ngIf="formGroup.get('price')?.hasError('min')">Prix invalide</mat-error>
+          </mat-form-field>
+
+          <!-- Quantité -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Quantité</mat-label>
+            <input matInput formControlName="quantity" type="number" placeholder="Entrez la quantité">
+            <mat-error *ngIf="formGroup.get('quantity')?.hasError('required')">Quantité requise</mat-error>
+            <mat-error *ngIf="formGroup.get('quantity')?.hasError('min')">Quantité invalide</mat-error>
+          </mat-form-field>
+
+          <!-- Seuil -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Seuil Minimal</mat-label>
+            <input matInput formControlName="threshold" type="number" placeholder="Entrez la seuil">
+            <mat-error *ngIf="formGroup.get('threshold')?.hasError('required')">Quantité requise</mat-error>
+            <mat-error *ngIf="formGroup.get('threshold')?.hasError('min')">Quantité invalide</mat-error>
+          </mat-form-field>
+
+          <!-- Catégorie -->
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Catégorie</mat-label>
+            <mat-select formControlName="categoryId" placeholder="Sélectionnez une catégorie">
+              <mat-option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="formGroup.get('categoryId')?.hasError('required')">Catégorie requise</mat-error>
+          </mat-form-field>
+          <p *ngIf="errorMessage" class="error-message">{{errorMessage}}</p>
+  
+        <div *ngIf="isLoading" class="loading-spinner">
+          <mat-spinner></mat-spinner>
+        </div>
+
+              <!-- Boutons -->
+        <div class="actions">
+          <button mat-raised-button color="primary" class="custom-button"
+                  [disabled]="formGroup.invalid || isLoading"
+                  [ngClass]="{ 'disabled-button': formGroup.invalid || isLoading }"
+                  (click)="isEditMode ? updateProduct() : addProduct()">
+            {{ isEditMode ? 'Modifier' : 'Ajouter' }}
+          </button>
+          <button mat-button (click)="back()" class="custom-button">Retour</button>
+        </div>
+      </form>
+    </mat-card-content>
+</mat-card>

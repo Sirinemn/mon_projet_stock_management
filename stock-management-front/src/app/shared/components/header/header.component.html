@@ -1,0 +1,44 @@
+<mat-sidenav-container class="sidenav-container">
+  <!-- Menu latéral -->
+  <mat-sidenav #sidenav mode="over" class="sidenav" fixedInViewport="true">
+    <button mat-icon-button (click)="sidenav.toggle()" aria-label="Close sidenav">
+      <mat-icon>close</mat-icon>
+    </button>
+    <button mat-button routerLink="/features/dashboard/view">Tableau de Bord</button>
+    <button mat-button routerLink="/features/stock/list">Transactions</button>
+    <button mat-button routerLink="/features/products/list">Produits</button>
+    <button mat-button *ngIf="isAmin" routerLink="/admin/categories/list" routerLinkActive="active-link">Catégories</button>
+    <button mat-button *ngIf="isAmin" routerLink="/admin/users">Utilisateur</button>
+    <button mat-button *ngIf="isAmin" routerLink="/admin/profile" routerLinkActive="active-link">Profil</button>
+    <button mat-button *ngIf="isMonitoring" routerLink="/monitoring/health">Surveillance</button>
+    <button mat-button (click)="logOut()">Déconnecter</button>
+  </mat-sidenav>
+
+  <!-- Contenu principal -->
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <div class="img">
+        <img src="/logo.png" alt="Logo" class="toolbar-image" />
+        Stock - Zen
+      </div>
+
+      <span class="spacer" *ngIf="!isMonitoring"></span>
+
+      <div class="desktop-menu" *ngIf="!isMonitoring">
+        <button mat-button routerLink="/features/dashboard/view" routerLinkActive="active-link">Tableau de Bord</button>
+        <button mat-button routerLink="/features/stock/list" routerLinkActive="active-link">Transactions</button>
+        <button mat-button routerLink="/features/products/list" routerLinkActive="active-link">Produits</button>
+        <button mat-button *ngIf="isAmin" routerLink="/admin/categories/list" routerLinkActive="active-link">Catégories</button>
+        <button mat-button *ngIf="isAmin" routerLink="/admin/users" routerLinkActive="active-link">Utilisateur</button>
+        <button mat-button *ngIf="isAmin" routerLink="/admin/profile" routerLinkActive="active-link">Profil</button>
+        <button mat-button *ngIf="isMonitoring" routerLink="/monitoring/health">Surveillance</button>
+      </div>
+
+      <button mat-button (click)="logOut()">Déconnecter</button>
+
+      <button mat-icon-button class="burger-menu" (click)="sidenav.toggle()" aria-label="Toggle sidenav" *ngIf="!isMonitoring">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </mat-toolbar>
+  </mat-sidenav-content>
+</mat-sidenav-container>

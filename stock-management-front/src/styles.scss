@@ -1,0 +1,105 @@
+// Palette de couleurs choisie
+$primary-color: #084B83;
+$secondary-color: #42BFDD;
+$tertiary-color: #BBE6E4;
+$background-color: #F0F6F6;
+$accent-color: #FF66B3;
+
+// Style des textes
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: black; 
+  background-color: $background-color; 
+ 
+}
+
+h1 , mat-card-title{
+  font-size: 2.5rem;
+  color: $primary-color;
+}
+h2 {
+  font-size: 2rem;
+  color: $primary-color;
+}
+h3 {
+  font-size: 1.75rem;
+  color: $primary-color;
+}
+mat-card {
+  background-color: $tertiary-color;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+}
+.custom-button {
+  background-color: $secondary-color;
+  color: $background-color;
+  padding: 10px 20px;
+  border-radius: 15px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border: none;
+}
+.disabled-button {
+  background-color: dimgrey;
+  color: linen;
+  opacity: 1;
+}
+.disabled-button:hover {
+  background-color: grey;
+  color: white;
+  cursor: not-allowed;
+  opacity: 0.8; 
+}
+.error-message {
+  margin-top: 10px;
+  padding: 12px;
+  color: white;
+  background-color: #f44336; 
+  border-radius: 4px;
+}
+mat-error {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 5px;
+  display: block;
+}
+.arrow_back {
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+  background-color: $secondary-color;
+  border-radius: 50%;
+  border: none;
+  transition: transform 0.2s ease;
+  &:hover {
+    transform: translateX(-4px);
+    background-color: $accent-color;
+  }
+}
+
+.custom-button:hover {
+  background-color: $accent-color;
+  transform: scale(1.1);
+}
+.custom-button:focus {
+  outline: 2px solid $accent-color;
+  outline-offset: 2px;
+}
+
+a {
+  color: $primary-color;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: $accent-color; 
+  text-decoration: underline;
+}
+app-footer {
+  position: relative;
+  margin-top: auto; 
+}

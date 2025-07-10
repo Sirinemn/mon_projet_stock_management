@@ -35,15 +35,29 @@ services:
     networks:
       - backend-network
 
-  # Frontend Angular (Nginx)
+  # Frontend Angular (Nginx avec SSL)
   frontend:
     build: ./stock-management-front
     container_name: stockmanagement-frontend
     restart: always
     ports:
       - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /var/www/certbot:/var/www/certbot:ro
     networks:
       - backend-network
+
+  # Certbot pour la gestion des certificats SSL
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    restart: always
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/www/certbot:/var/www/certbot
+    command: certonly --webroot --webroot-path=/var/www/certbot --email contact@stock-zen.fr --agree-tos --no-eff-email -d stock-zen.fr -d www.stock-zen.fr
 
 volumes:
   pgdata:

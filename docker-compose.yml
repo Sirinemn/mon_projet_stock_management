@@ -45,7 +45,6 @@ services:
       - "443:443"
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt:ro
-      - /var/www/certbot:/var/www/certbot:ro
     networks:
       - backend-network
 
@@ -57,7 +56,16 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
       - /var/www/certbot:/var/www/certbot
-    command: certonly --webroot --webroot-path=/var/www/certbot --email contact@stock-zen.fr --agree-tos --no-eff-email -d stock-zen.fr -d www.stock-zen.fr
+    entrypoint: >
+      sh -c "certbot certonly --webroot 
+      --webroot-path=/var/www/certbot 
+      --email contact@stock-zen.fr 
+      --agree-tos 
+      --no-eff-email 
+      -d stock-zen.fr 
+      -d www.stock-zen.fr"
+    networks:
+      - backend-network
 
 volumes:
   pgdata:

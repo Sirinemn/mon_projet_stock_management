@@ -40,7 +40,7 @@ services:
     image: stockmanagement-frontend
     container_name: stockmanagement-frontend
     restart: always
-    platform: linux/amd64
+    platform: linux/arm64
     ports:
       - "80:80"
       - "443:443"

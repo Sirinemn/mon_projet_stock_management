@@ -20,7 +20,7 @@ services:
 
   # Backend Spring Boot
   backend:
-    build: ./stock-management-back
+    image: stockmanagement-backend
     container_name: stockmanagement-backend
     restart: always
     depends_on:
@@ -37,7 +37,7 @@ services:
 
   # Frontend Angular (Nginx avec SSL)
   frontend:
-    build: ./stock-management-front
+    image: stockmanagement-frontend
     container_name: stockmanagement-frontend
     restart: always
     ports:

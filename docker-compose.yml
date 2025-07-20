@@ -20,7 +20,7 @@ services:
 
   # Backend Spring Boot
   backend:
-    image: stockmanagement-backend
+    build: ./stock-management-back
     container_name: stockmanagement-backend
     restart: always
     depends_on:
@@ -40,6 +40,7 @@ services:
     image: stockmanagement-frontend
     container_name: stockmanagement-frontend
     restart: always
+    platform: linux/amd64
     ports:
       - "80:80"
       - "443:443"
@@ -64,8 +65,7 @@ services:
       --no-eff-email 
       -d stock-zen.fr 
       -d www.stock-zen.fr"
-    networks:
-      - backend-network
+    profiles: ["certbot"]
 
 volumes:
   pgdata:

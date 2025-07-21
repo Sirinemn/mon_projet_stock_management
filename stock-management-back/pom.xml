@@ -229,18 +229,20 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>fr.sirine.stock_management_back.StockManagementBackApplication</mainClass>
+					<executable>true</executable>
+					<layers>
+						<enabled>true</enabled>
+					</layers>
+				</configuration>
 				<executions>
 					<execution>
-					<goals>
-						<goal>repackage</goal>
-					</goals>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
 					</execution>
 				</executions>
-				<configuration>
-					<!-- Spécifiez votre classe principale si nécessaire -->
-					<mainClass>fr.sirine.stock_management_back.StockManagementBackApplication</mainClass>
-					<layout>JAR</layout>
-				</configuration>
 			</plugin>
 
 		</plugins>

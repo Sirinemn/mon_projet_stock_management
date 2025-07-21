@@ -23,6 +23,7 @@ services:
     build: ./stock-management-back
     container_name: stockmanagement-backend
     restart: always
+    platform: linux/arm64
     depends_on:
       - db
     env_file: .env

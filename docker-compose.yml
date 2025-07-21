@@ -58,14 +58,12 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
       - /var/www/certbot:/var/www/certbot
-    entrypoint: >
-      sh -c "certbot certonly --webroot 
-      --webroot-path=/var/www/certbot 
-      --email contact@stock-zen.fr 
-      --agree-tos 
-      --no-eff-email 
-      -d stock-zen.fr 
-      -d www.stock-zen.fr"
+    command: >
+      renew --webroot
+      --webroot-path=/var/www/certbot
+      --email contact@stock-zen.fr
+      --agree-tos
+      --no-eff-email
     profiles: ["certbot"]
 
 volumes:

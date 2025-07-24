@@ -1,11 +1,9 @@
 package fr.sirine.stock_management_back.service.impl;
 
 import fr.sirine.stock_management_back.entities.Group;
-import fr.sirine.stock_management_back.entities.User;
 import fr.sirine.stock_management_back.exceptions.custom.GroupNotFountException;
 import fr.sirine.stock_management_back.repository.GroupRepository;
 import fr.sirine.stock_management_back.service.IGroupService;
-import fr.sirine.stock_management_back.service.IUserService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,5 +20,9 @@ public class GroupService implements IGroupService {
         Group group = findById(id);
         group.setName(groupName);
         groupRepository.save(group);
+    }
+    public void deleteGroup(Integer id) {
+        Group group = groupRepository.findById(id).orElseThrow(() -> new GroupNotFountException("Group not found"));
+        groupRepository.delete(group);
     }
 }

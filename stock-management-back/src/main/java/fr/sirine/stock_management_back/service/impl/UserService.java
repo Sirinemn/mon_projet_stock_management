@@ -1,17 +1,19 @@
 package fr.sirine.stock_management_back.service.impl;
 
 import fr.sirine.stock_management_back.dto.UserDto;
+import fr.sirine.stock_management_back.entities.Group;
+import fr.sirine.stock_management_back.entities.Role;
 import fr.sirine.stock_management_back.entities.User;
 import fr.sirine.stock_management_back.exceptions.custom.UserNotFoundException;
 import fr.sirine.stock_management_back.mapper.UserMapper;
 import fr.sirine.stock_management_back.repository.UserRepository;
+import fr.sirine.stock_management_back.service.IGroupService;
 import fr.sirine.stock_management_back.service.IUserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.stream.Collectors;
@@ -22,11 +24,13 @@ public class UserService implements IUserService {
     private final UserMapper userMapper;
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final PasswordEncoder passwordEncoder;
+    private final IGroupService groupService;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder, IGroupService groupService) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
+        this.groupService = groupService;
     }
 
     public UserDto getById(Integer id) {
@@ -56,8 +60,14 @@ public class UserService implements IUserService {
         }
     }
     public void deleteUser(Integer id) {
-
-        this.userRepository.deleteById(id);
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        if (user.getRoles().stream().map(Role::getName).anyMatch(role -> role.equals("ADMIN"))) {
+            Group group = groupService.findById(user.getGroup().getId());
+            this.userRepository.deleteById(id);
+            groupService.deleteGroup(group.getId());
+        } else {
+            this.userRepository.deleteById(id);
+        }
     }
     public List<UserDto> findByRole(String role) {
         List<User> users = userRepository.findByRoles_Name(role);

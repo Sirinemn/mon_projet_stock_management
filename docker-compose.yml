@@ -1,71 +1,145 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:15-alpine
-    container_name: stock-postgres
-    environment:
-      POSTGRES_DB: stockdb
-      POSTGRES_USER: ${DATASOURCE_USERNAME}
-      POSTGRES_PASSWORD: ${DATASOURCE_PASSWORD}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+  # Base de données PostgreSQL
+  db:
+    image: postgres:15-alpine  # Version Alpine plus légère
+    container_name: stockmanagement-db
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DATASOURCE_USERNAME}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  backend:
-    build:
-      context: ./backend
-    container_name: stockmanagement-backend
-    depends_on:
-      postgres:
-        condition: service_healthy
-    ports:
-      - "8001:8001"
+    env_file: .env
     environment:
-      SPRING_PROFILES_ACTIVE: prod
-      DATASOURCE_URL: jdbc:postgresql://postgres:5432/stockdb
-      DATASOURCE_USERNAME: ${DATASOURCE_USERNAME}
-      DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
-      JWT_SECRET: ${JWT_SECRET}
-      JWT_EXPIRATION: ${JWT_EXPIRATION}
-      LOGIN_URL: https://stock-zen.fr
-      MAIL_HOST: ${MAIL_HOST}
-      MAIL_PORT: ${MAIL_PORT}
-      MAIL_USERNAME: ${MAIL_USERNAME}
-      MAIL_PASSWORD: ${MAIL_PASSWORD}
-      MAIL_SUPPORT: ${MAIL_SUPPORT}
-      MONITOR_EMAIL: ${MONITOR_EMAIL}
-      MONITOR_FIRSTNAME: ${MONITOR_FIRSTNAME}
-      MONITOR_LASTNAME: ${MONITOR_LASTNAME}
-      MONITOR_PASSWORD: ${MONITOR_PASSWORD}
-      MONITOR_GROUP: ${MONITOR_GROUP}
-      MONITOR_ROLE: ${MONITOR_ROLE}
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8001/api/actuator/health"]
-      interval: 30s
-      timeout: 5s
-      retries: 5
-      start_period: 60s
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - backend-network
+    # OPTIMISATIONS POSTGRESQL CRITIQUES POUR RASPBERRY PI
+    command: >
+      postgres
+      -c shared_buffers=32MB
+      -c effective_cache_size=100MB
+      -c maintenance_work_mem=16MB
+      -c checkpoint_completion_target=0.9
+      -c wal_buffers=1MB
+      -c default_statistics_target=100
+      -c random_page_cost=1.1
+      -c effective_io_concurrency=200
+      -c max_connections=15
+      -c work_mem=4MB
     deploy:
       resources:
         limits:
-          memory: 512M
-    restart: unless-stopped
+          memory: 100M
+        reservations:
+          memory: 50M
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
+  # Backend Spring Boot
+  backend:
+    image: stockmanagement-backend
+    container_name: stockmanagement-backend
+    restart: unless-stopped
+    platform: linux/arm64
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      SPRING_DATASOURCE_URL: ${DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
+      # OPTIMISATIONS JAVA CRITIQUES POUR RASPBERRY PI 512MB
+      JAVA_OPTS: >
+        -Xmx180m
+        -Xms80m
+        -XX:+UseSerialGC
+        -XX:MaxMetaspaceSize=64m
+        -XX:CompressedClassSpaceSize=32m
+        -XX:ReservedCodeCacheSize=16m
+        -XX:InitialCodeCacheSize=8m
+        -XX:MaxDirectMemorySize=32m
+        -Djava.security.egd=file:/dev/./urandom
+        -Djava.awt.headless=true
+        -Dfile.encoding=UTF-8
+        -Dspring.backgroundpreinitializer.ignore=true
+    ports:
+      - "8001:8001"
+    networks:
+      - backend-network
+    volumes:
+      - ./logs:/app/logs
+    deploy:
+      resources:
+        limits:
+          memory: 220M
+        reservations:
+          memory: 120M
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8001/actuator/health || exit 1"]
+      interval: 45s
+      timeout: 15s
+      retries: 3
+      start_period: 120s
+
+  # Frontend Angular (Nginx avec SSL)
   frontend:
-    build:
-      context: ./frontend
-    container_name: stock-frontend
+    image: stockmanagement-frontend
+    container_name: stockmanagement-frontend
+    restart: unless-stopped
+    platform: linux/arm64
     ports:
       - "80:80"
-    depends_on:
-      - backend
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /var/www/certbot:/var/www/certbot
+    networks:
+      - backend-network
+    deploy:
+      resources:
+        limits:
+          memory: 50M
+        reservations:
+          memory: 20M
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Certbot pour la gestion des certificats SSL
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
     restart: unless-stopped
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/www/certbot:/var/www/certbot
+    command: >
+      renew --webroot
+      --webroot-path=/var/www/certbot
+      --email contact@stock-zen.fr
+      --agree-tos
+      --no-eff-email
+    profiles: ["certbot"]
+    deploy:
+      resources:
+        limits:
+          memory: 30M
 
 volumes:
-  postgres_data:
+  pgdata:
+
+networks:
+  backend-network:
+    driver: bridge 

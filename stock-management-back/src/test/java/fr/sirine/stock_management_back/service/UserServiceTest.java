@@ -32,10 +32,9 @@ public class UserServiceTest {
     @Mock
     private UserMapper userMapper;
     @Mock
-    private UserMapper userMapperSpy;
-
-    @Mock
     private PasswordEncoder passwordEncoder;
+    @Mock
+    private IGroupService groups;
 
     private User user;
     private UserDto userDto;
@@ -79,6 +78,7 @@ public class UserServiceTest {
                 .roles(List.of(adminRole))
                 .firstname("admin")
                 .email("admin@mail.fr")
+                .group(group)
                 .build();
     }
     @Test
@@ -112,8 +112,11 @@ public class UserServiceTest {
     }
     @Test
     void should_delete_user() {
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
         userService.deleteUser(1);
+
         verify(userRepository, times(1)).deleteById(1);
+        verify(groups, times(0)).deleteGroup(1);
     }
     @Test
     void should_get_all_users() {

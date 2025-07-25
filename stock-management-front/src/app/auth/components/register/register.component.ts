@@ -50,8 +50,15 @@ export class RegisterComponent implements OnDestroy {
     if (this.formGroup.valid) {
       this.isLoading = true;
       this.errorMessage = '';
+
       const formValue = this.formGroup.value;
+      formValue.firstname = formValue.firstname.trim();
+      formValue.lastname = formValue.lastname.trim();
+      formValue.groupName = formValue.groupName.trim();
+      formValue.email = formValue.email.trim();
+
       const registerRequest = this.formGroup.value as RegisterAdminRequest;
+      
       this.subscription = this.authService.registerAdmin(registerRequest).subscribe({
         next: (response) => {
           this.isLoading = false; 

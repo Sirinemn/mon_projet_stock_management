@@ -1,6 +1,7 @@
 package fr.sirine.stock_management_back.service.impl;
 
 import fr.sirine.stock_management_back.entities.Group;
+import fr.sirine.stock_management_back.exceptions.custom.GroupAlreadyExistException;
 import fr.sirine.stock_management_back.exceptions.custom.GroupNotFountException;
 import fr.sirine.stock_management_back.repository.GroupRepository;
 import fr.sirine.stock_management_back.service.IGroupService;
@@ -18,8 +19,12 @@ public class GroupService implements IGroupService {
     }
     public void updateGroup(Integer id, String groupName) {
         Group group = findById(id);
-        group.setName(groupName);
-        groupRepository.save(group);
+        if (groupRepository.findByName(groupName).isPresent()) {
+            throw new GroupAlreadyExistException("nom de groupe déjà utilisé");
+        } else {
+            group.setName(groupName);
+            groupRepository.save(group);
+        }
     }
     public void deleteGroup(Integer id) {
         Group group = groupRepository.findById(id).orElseThrow(() -> new GroupNotFountException("Group not found"));

@@ -79,15 +79,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
         }
       });
   }
-
+  private normalizeText(value: string): string {
+    return value.trim().replace(/\s+/g, ' ');
+  }
   public onSubmit() {
     if (this.profileForm.valid && this.userId) {
       const updatedUser = {
-        firstname: this.profileForm.value.firstname,
-        lastname: this.profileForm.value.lastname,
-        email: this.profileForm.value.email,
+        firstname: this.normalizeText(this.profileForm.value.firstname),
+        lastname: this.normalizeText(this.profileForm.value.lastname),
+        email: this.normalizeText(this.profileForm.value.email),
         dateOfBirth: this.profileForm.value.dateOfBirth
       } as User;
+
+      const cleanedGroupName = this.normalizeText(this.profileForm.value.groupName);
 
       this.adminService.updateUser(this.userId, updatedUser).subscribe({
         next: () => {
@@ -108,8 +112,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
           });
 
           // Mise à jour du groupe séparément
-          if (this.user?.groupName !== this.profileForm.value.groupName) {
-            this.adminService.updateGroupName(this.userId, this.profileForm.value.groupName).subscribe({
+          if (this.user?.groupName !== cleanedGroupName) {
+            this.adminService.updateGroupName(this.userId, cleanedGroupName).subscribe({
               next: () => {
                 this.snackBar.open('Nom mis à jour avec succès', 'Fermer', {
                   duration: 3000,
